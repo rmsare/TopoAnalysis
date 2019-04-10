@@ -1692,15 +1692,15 @@ class ScarpWavelet(BaseSpatialGrid):
         if extent is None:
             extent = [self._georef_info.xllcenter, self._georef_info.xllcenter+(self._georef_info.nx-0.5)*self._georef_info.dx, self._georef_info.yllcenter, self._georef_info.yllcenter+(self._georef_info.ny-0.5)*self._georef_info.dx]
 
-        plt.figure()
+        #plt.figure()
         cmap = kwargs.pop('cmap', None)
         vmin = kwargs.pop('vmin', -90)
         vmax = kwargs.pop('vmax', 90)
-        title = kwargs.pop('title', '')
+        title = kwargs.pop('title', 'gradient averaged over {:.0f} m'.format(distance))
 
         if hillshade is not None:
             from matplotlib import cm
-            plt.imshow(hillshade._griddata, extent = extent, cmap = cm.gray, **kwargs)
+            #plt.imshow(hillshade._griddata, extent = extent, cmap = cm.gray, **kwargs)
         self._adjusted_orientations = adjusted_orientations._griddata
         
         from matplotlib import colors
@@ -1709,12 +1709,13 @@ class ScarpWavelet(BaseSpatialGrid):
         adjusted_orientations_rgba = cm.ScalarMappable(cmap = cmap, norm = norm).to_rgba(adjusted_orientations._griddata)
         norm = colors.LogNorm()
         adjusted_orientations_rgba[:,:,3] = (~normalized_data.mask).astype(float)*norm(self._SNR)
-        plt.imshow(adjusted_orientations_rgba, extent = extent, **kwargs)
-        plt.ion()
+        #im = plt.imshow(adjusted_orientations_rgba, extent = extent, **kwargs)
+        #plt.colorbar(im, label='Adjusted orientation [deg]', shrink=0.5)
+        #plt.ion()
 
-        plt.title(title)
+        #plt.title(title)
 
-        plt.show(block = False)
+        #plt.show(block = False)
 
 
     def template_window(self, window_size, age, orientation, use_pixels=False):
